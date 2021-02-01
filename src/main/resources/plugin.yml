@@ -1,0 +1,6 @@
+name: EmEconomy
+version: ${project.version}
+main: de.dedad.emeconomy.EmEconomyMain
+api-version: 1.14
+authors: [ dedad ]
+description: Economy Plugin für EmnichtdaYT RP Netzwerk
