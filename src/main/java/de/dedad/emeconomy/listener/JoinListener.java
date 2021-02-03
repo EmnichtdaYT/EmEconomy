@@ -1,7 +1,6 @@
 package de.dedad.emeconomy.listener;
 
 import de.dedad.emeconomy.EmEconomyMain;
-import de.dedad.emeconomy.SQL;
 import de.dedad.emeconomy.entity.EconomyPlayer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -13,6 +12,9 @@ public class JoinListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent e) {
         if (!EmEconomyMain.getPlugin().instanceMap.containsKey(e.getPlayer().getUniqueId())) {
             EmEconomyMain.getPlugin().instanceMap.put(e.getPlayer().getUniqueId(), new EconomyPlayer(e.getPlayer().getUniqueId()));
+        }
+        if (!EmEconomyMain.getPlugin().economyInDatabase(e.getPlayer().getUniqueId())) {
+            EmEconomyMain.getPlugin().initEconomy(e.getPlayer().getUniqueId());
         }
     }
 }

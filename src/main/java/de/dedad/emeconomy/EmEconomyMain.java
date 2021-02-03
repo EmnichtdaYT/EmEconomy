@@ -7,6 +7,9 @@ import lombok.Getter;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -17,6 +20,7 @@ public final class EmEconomyMain extends JavaPlugin {
     public static String PLUGIN_NAME = ChatColor.AQUA + "[EmEconomy] " + ChatColor.RESET;
     public SQL database;
     public HashMap<UUID, EconomyPlayer> instanceMap;
+    public String serverRunning = "";
 
     @Override
     public void onEnable() {
@@ -33,6 +37,7 @@ public final class EmEconomyMain extends JavaPlugin {
             getServer().getPluginManager().disablePlugin(this);
         }
 
+        this.serverRunning = getConfig().getString("EmEconomy.Servername");
         this.database = new SQL(getConfig().getString("SQL.Hostname"), getConfig().getString("SQL.Port"), getConfig().getString("SQL.Database"), getConfig().getString("SQL.Username"), getConfig().getString("SQL.Password"), getConfig().getBoolean("SQL.UseSSL"), getConfig().getString("EmEconomy.Servername"));
     }
 
@@ -59,5 +64,30 @@ public final class EmEconomyMain extends JavaPlugin {
         this.getConfig().options().copyDefaults(true);
         this.saveConfig();
         this.saveDefaultConfig();
+    }
+
+    /*
+     * MySQL
+     */
+
+    public boolean economyInDatabase(UUID uuid) {
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            st = EmEconomyMain.getPlugin().database.getConnection().prepareStatement("SELECT 'uuid' FROM 'economy' WHERE 'uuid' = " + uuid.toString());
+            rs = st.executeQuery();
+            return rs.next() && rs.getString(1) != null;
+        } catch (SQLException x) {
+            x.printStackTrace();
+        }
+        return false;
+    }
+
+    public void initEconomy(UUID uuid) {
+        try {
+            EmEconomyMain.getPlugin().database.getConnection().prepareCall("initEconomy '" + uuid + "', '" + this.serverRunning + "'").execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
