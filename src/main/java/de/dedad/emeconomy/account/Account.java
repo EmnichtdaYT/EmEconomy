@@ -4,6 +4,7 @@ import java.math.BigInteger;
 
 public abstract class Account {
     private UUID holderUuid;
+    private EmEconomyMain pl;
     
     public abstract BigInteger getAmount();
     public abstract void setAmount(BigInteger value);
@@ -12,5 +13,9 @@ public abstract class Account {
     
     public void getHolder(){
         return hoderUuid;
+    }
+    
+    public void getPl(){
+        return pl;
     }
 }
