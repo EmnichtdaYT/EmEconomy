@@ -4,11 +4,10 @@ import java.math.BigInteger;
 
 public class PrivateBankAccount extends Account {
 
-    private BigInteger amount;
-
     @Override
     public BigInteger getAmount() {
         return null;
+        //return super.getPl().database.getPrivateBankAmount(super.getHolder());
     }
 
     @Override
@@ -24,5 +23,5 @@ public class PrivateBankAccount extends Account {
     @Override
     public void subtractAmount(BigInteger value) {
         this.amount = amount.subtract(value);
-    }
+    }   
 }
