@@ -47,6 +47,7 @@ public class SQL {
     }
 
     // QUERIES
+    // TODO: insert sql statements
 
     public boolean economyInDatabase(UUID uuid) {
         try {
@@ -100,26 +101,68 @@ public class SQL {
     }
 
     public void setCashAmount(UUID uuid, BigInteger amount) {
-
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            st = getConnection().prepareCall(" '" + uuid + "', " + amount);
+            st.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void setBankAmount(UUID uuid, BigInteger amount) {
-
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            st = getConnection().prepareCall(" '" + uuid + "', " + amount);
+            st.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void addAmountToCash(UUID uuid, BigInteger amount) {
-
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            st = getConnection().prepareCall(" '" + uuid + "', " + amount);
+            st.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void addAmountToBank(UUID uuid, BigInteger amount) {
-
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            st = getConnection().prepareCall(" '" + uuid + "', " + amount);
+            st.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void subtractAmountFromCash(UUID uuid, BigInteger amount) {
-
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            st = getConnection().prepareCall(" '" + uuid + "', " + amount);
+            st.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void subtractAmountFromBank(UUID uuid, BigInteger amount) {
-
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            st = getConnection().prepareCall(" '" + uuid + "', " + amount);
+            st.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

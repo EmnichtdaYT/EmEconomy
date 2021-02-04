@@ -7,6 +7,7 @@ import lombok.Getter;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -41,6 +42,11 @@ public final class EmEconomyMain extends JavaPlugin {
     @Override
     public void onDisable() {
         this.getLogger().fine(PLUGIN_NAME + "by dedad wird deaktiviert. Bis denne! :)");
+        try {
+            this.database.getConnection().close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private void initConfiguration() {
