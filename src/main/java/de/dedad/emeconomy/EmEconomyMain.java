@@ -7,9 +7,6 @@ import lombok.Getter;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -64,30 +61,5 @@ public final class EmEconomyMain extends JavaPlugin {
         this.getConfig().options().copyDefaults(true);
         this.saveConfig();
         this.saveDefaultConfig();
-    }
-
-    /*
-     * MySQL
-     */
-
-    public boolean economyInDatabase(UUID uuid) {
-        try {
-            PreparedStatement st;
-            ResultSet rs;
-            st = EmEconomyMain.getPlugin().database.getConnection().prepareStatement("SELECT 'uuid' FROM 'economy' WHERE 'uuid' = " + uuid.toString());
-            rs = st.executeQuery();
-            return rs.next() && rs.getString(1) != null;
-        } catch (SQLException x) {
-            x.printStackTrace();
-        }
-        return false;
-    }
-
-    public void initEconomy(UUID uuid) {
-        try {
-            EmEconomyMain.getPlugin().database.getConnection().prepareCall("initEconomy '" + uuid + "', '" + this.serverRunning + "'").execute();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 }

@@ -1,5 +1,6 @@
 package de.dedad.emeconomy.entity;
 
+import de.dedad.emeconomy.EmEconomyMain;
 import de.dedad.emeconomy.account.PocketCash;
 import de.dedad.emeconomy.account.PrivateBankAccount;
 import lombok.Getter;
@@ -18,8 +19,8 @@ public class EconomyPlayer {
 
     public EconomyPlayer(UUID player) {
         this.player = player;
-        cash = new PocketCash();
-        bankAccount = new PrivateBankAccount();
+        cash = new PocketCash(player, EmEconomyMain.getPlugin());
+        bankAccount = new PrivateBankAccount(player, EmEconomyMain.getPlugin());
     }
 
 }

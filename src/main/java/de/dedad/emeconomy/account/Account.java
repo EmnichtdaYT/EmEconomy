@@ -1,14 +1,17 @@
 package de.dedad.emeconomy.account;
 
+import de.dedad.emeconomy.EmEconomyMain;
+
 import java.math.BigInteger;
+import java.util.UUID;
 
 public abstract class Account {
-    private UUID holderUuid;
-    private EmEconomyMain pl;
+    private UUID holderUUID;
+    private EmEconomyMain plugin;
     
-    public Account(UUID holderUuid, EmEconomyMain pl){
-        this.hoderUuid = holderUuid;
-        this.pl = pl;
+    public Account(UUID holderUUID, EmEconomyMain plugin){
+        this.holderUUID = holderUUID;
+        this.plugin = plugin;
     }
     
     public abstract BigInteger getAmount();
@@ -16,11 +19,11 @@ public abstract class Account {
     public abstract void addAmount(BigInteger value);
     public abstract void subtractAmount(BigInteger value);
     
-    public void getHolder(){
-        return hoderUuid;
+    public UUID getHolder() {
+        return holderUUID;
     }
     
-    public void getPl(){
-        return pl;
+    public EmEconomyMain getPlugin() {
+        return plugin;
     }
 }

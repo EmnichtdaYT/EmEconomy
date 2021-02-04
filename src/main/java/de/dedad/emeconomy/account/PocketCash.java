@@ -1,28 +1,33 @@
 package de.dedad.emeconomy.account;
 
+import de.dedad.emeconomy.EmEconomyMain;
+
 import java.math.BigInteger;
+import java.util.UUID;
 
 public class PocketCash extends Account {
 
-    private BigInteger amount;
+    public PocketCash(UUID holderUUID, EmEconomyMain plugin) {
+        super(holderUUID, plugin);
+    }
 
     @Override
     public BigInteger getAmount() {
-        return null;
+        return super.getPlugin().database.getCashAmount(super.getHolder());
     }
 
     @Override
     public void setAmount(BigInteger value) {
-        this.amount = value;
+        super.getPlugin().database.setCashAmount(super.getHolder(), value);
     }
 
     @Override
     public void addAmount(BigInteger value) {
-        this.amount = value.add(this.amount);
+        super.getPlugin().database.addAmountToCash(super.getHolder(), value);
     }
 
     @Override
     public void subtractAmount(BigInteger value) {
-        this.amount = amount.subtract(value);
+        super.getPlugin().database.subtractAmountFromCash(super.getHolder(), value);
     }
 }
