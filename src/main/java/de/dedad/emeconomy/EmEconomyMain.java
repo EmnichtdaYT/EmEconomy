@@ -15,23 +15,23 @@ public final class EmEconomyMain extends JavaPlugin {
 
     @Getter
     private static EmEconomyMain plugin;
-    public static String PLUGIN_NAME = ChatColor.AQUA + "[EmEconomy] " + ChatColor.RESET;
     public SQL database;
     public HashMap<UUID, EconomyPlayer> instanceMap;
     public String serverRunning = "";
+    public boolean connectionExists = false;
 
     @Override
     public void onEnable() {
         plugin = this;
-        this.getLogger().fine(PLUGIN_NAME + "by dedad wird gestartet. Moin!");
+        this.getLogger().fine("by dedad wird gestartet. Moin!");
 
         initConfiguration();
 
         this.getServer().getPluginManager().registerEvents(new JoinListener(), this);
         this.getServer().getPluginManager().registerEvents(new QuitListener(), this);
 
-        if (getConfig().getString("SQL.database").equals("editme")) {
-            this.getLogger().warning(PLUGIN_NAME + "Die SQL-Zugangsdaten wurden noch nicht editiert oder der Server startet zum ersten Mal. Bitte gib deine SQL-Zugangsdaten in der Konfigurationsdatei an.");
+        if (getConfig().getString("SQL.Database").equals("editme")) {
+            this.getLogger().warning("Die SQL-Zugangsdaten wurden noch nicht editiert oder der Server startet zum ersten Mal. Bitte gib deine SQL-Zugangsdaten in der Konfigurationsdatei an.");
             getServer().getPluginManager().disablePlugin(this);
         }
 
@@ -41,12 +41,17 @@ public final class EmEconomyMain extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        this.getLogger().fine(PLUGIN_NAME + "by dedad wird deaktiviert. Bis denne! :)");
-        try {
-            this.database.getConnection().close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        this.getLogger().fine("by dedad wird deaktiviert. Bis denne! :)");
+        /*
+        if (connectionExists) {
+            try {
+                this.database.getConnection().close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
+
+         */
     }
 
     private void initConfiguration() {

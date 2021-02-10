@@ -10,7 +10,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
-import static de.dedad.emeconomy.EmEconomyMain.PLUGIN_NAME;
 import static de.dedad.emeconomy.EmEconomyMain.getPlugin;
 
 public class SQL {
@@ -34,6 +33,7 @@ public class SQL {
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
 
         ds = new HikariDataSource(config);
+        getPlugin().connectionExists = true;
     }
 
     public Connection getConnection() {
@@ -41,7 +41,7 @@ public class SQL {
             return ds.getConnection();
         } catch (SQLException e) {
             e.printStackTrace();
-            getPlugin().getLogger().severe(PLUGIN_NAME + "Die Verbindung zur Datenbank ist fehlgeschlagen.");
+            getPlugin().getLogger().severe("Die Verbindung zur Datenbank ist fehlgeschlagen.");
             return null;
         }
     }
