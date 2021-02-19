@@ -4,10 +4,8 @@ import de.dedad.emeconomy.entity.EconomyPlayer;
 import de.dedad.emeconomy.listener.JoinListener;
 import de.dedad.emeconomy.listener.QuitListener;
 import lombok.Getter;
-import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -16,14 +14,13 @@ public final class EmEconomyMain extends JavaPlugin {
     @Getter
     private static EmEconomyMain plugin;
     public SQL database;
-    public HashMap<UUID, EconomyPlayer> instanceMap;
+    public HashMap<UUID, EconomyPlayer> instanceMap = new HashMap<>();
     public String serverRunning = "";
     public boolean connectionExists = false;
 
     @Override
     public void onEnable() {
         plugin = this;
-        this.getLogger().fine("by dedad wird gestartet. Moin!");
 
         initConfiguration();
 
@@ -42,16 +39,6 @@ public final class EmEconomyMain extends JavaPlugin {
     @Override
     public void onDisable() {
         this.getLogger().fine("by dedad wird deaktiviert. Bis denne! :)");
-        /*
-        if (connectionExists) {
-            try {
-                this.database.getConnection().close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-
-         */
     }
 
     private void initConfiguration() {

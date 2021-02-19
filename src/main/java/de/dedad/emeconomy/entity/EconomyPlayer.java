@@ -4,18 +4,17 @@ import de.dedad.emeconomy.EmEconomyMain;
 import de.dedad.emeconomy.account.PocketCash;
 import de.dedad.emeconomy.account.PrivateBankAccount;
 import lombok.Getter;
-import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
 public class EconomyPlayer {
 
     @Getter
-    private PocketCash cash;
+    private final PocketCash cash;
     @Getter
-    private PrivateBankAccount bankAccount;
+    private final PrivateBankAccount bankAccount;
     @Getter
-    private UUID player;
+    private final UUID player;
 
     public EconomyPlayer(UUID player) {
         this.player = player;

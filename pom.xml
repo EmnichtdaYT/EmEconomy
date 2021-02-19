@@ -24,10 +24,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>
-                                de.dedad.emeconomy.EmEconomyMain
-                            </mainClass>
-                            <addClasspath>true</addClasspath>
+                            <mainClass>de.dedad.emeconomy.EmEconomyMain</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

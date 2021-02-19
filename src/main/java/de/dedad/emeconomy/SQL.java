@@ -4,10 +4,7 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 import java.math.BigInteger;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.UUID;
 
 import static de.dedad.emeconomy.EmEconomyMain.getPlugin;
@@ -16,11 +13,9 @@ public class SQL {
 
     private final HikariDataSource ds;
 
-    private final String database;
     private final String serverName;
 
     public SQL(String hostname, String port, String database, String username, String password, boolean useSSL, String serverName) {
-        this.database = database;
         this.serverName = serverName;
 
         HikariConfig config = new HikariConfig();
@@ -52,7 +47,7 @@ public class SQL {
         try {
             PreparedStatement st;
             ResultSet rs;
-            st = getConnection().prepareStatement("SELECT 'uuid' FROM 'economy' WHERE 'uuid' = " + uuid.toString());
+            st = getConnection().prepareStatement("SELECT uuid FROM economy WHERE uuid = '" + uuid.toString() + "'");
             rs = st.executeQuery();
             return rs.next() && rs.getString(1) != null;
         } catch (SQLException x) {
@@ -63,7 +58,11 @@ public class SQL {
 
     public void initEconomy(UUID uuid) {
         try {
-            getConnection().prepareCall("initEconomy('" + uuid + "', '" + serverName + "')").execute();
+            CallableStatement st = getConnection().prepareCall("{call initEconomy(?, ?)}");
+            st.setString(1, uuid.toString());
+            st.setString(2, serverName);
+            st.execute();
+            st.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -73,12 +72,12 @@ public class SQL {
         try {
             PreparedStatement st;
             ResultSet rs;
-            st = getConnection().prepareStatement("SELECT bank WHERE uuid = '" + uuid + "', server = '" + serverName + "'");
+            st = getConnection().prepareStatement("SELECT bank FROM economy WHERE uuid = ?, server = ?");
+            st.setString(1, uuid.toString());
+            st.setString(2, serverName);
             rs = st.executeQuery();
             while (rs.next()) {
-                if (rs.getString("server").equalsIgnoreCase(serverName)) {
-                    return BigInteger.valueOf(rs.getBigDecimal("bank").longValue());
-                }
+                return BigInteger.valueOf(rs.getBigDecimal("bank").longValue());
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -90,12 +89,12 @@ public class SQL {
         try {
             PreparedStatement st;
             ResultSet rs;
-            st = getConnection().prepareStatement("SELECT pocket WHERE uuid = '" + uuid + "', server = '" + serverName + "'");
+            st = getConnection().prepareStatement("SELECT pocket FROM economy WHERE uuid = ?, server = ?");
+            st.setString(1, uuid.toString());
+            st.setString(2, serverName);
             rs = st.executeQuery();
             while (rs.next()) {
-                if (rs.getString("server").equalsIgnoreCase(serverName)) {
-                    return BigInteger.valueOf(rs.getBigDecimal("pocket").longValue());
-                }
+                return BigInteger.valueOf(rs.getBigDecimal("pocket").longValue());
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -105,10 +104,12 @@ public class SQL {
 
     public void setCashAmount(UUID uuid, BigInteger amount) {
         try {
-            PreparedStatement st;
-            ResultSet rs;
-            st = getConnection().prepareCall("economySetMoneyPocket('" + uuid + "', '" + amount + "', '" + serverName + "')");
+            CallableStatement st = getConnection().prepareCall("{call economySetMoneyPocket(?, ?, ?)}");
+            st.setString(1, uuid.toString());
+            st.setObject(2, amount);
+            st.setString(3, serverName);
             st.execute();
+            st.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -116,10 +117,12 @@ public class SQL {
 
     public void setBankAmount(UUID uuid, BigInteger amount) {
         try {
-            PreparedStatement st;
-            ResultSet rs;
-            st = getConnection().prepareCall("economySetMoneyBank('" + uuid + "', '" + amount + "', '" + serverName + "')");
+            CallableStatement st = getConnection().prepareCall("{call economySetMoneyBank(?, ?, ?)}");
+            st.setString(1, uuid.toString());
+            st.setObject(2, amount);
+            st.setString(3, serverName);
             st.execute();
+            st.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -127,10 +130,12 @@ public class SQL {
 
     public void addAmountToCash(UUID uuid, BigInteger amount) {
         try {
-            PreparedStatement st;
-            ResultSet rs;
-            st = getConnection().prepareCall("economyAddMoneyPocket('" + uuid + "', '" + amount + "', '" + serverName + "')");
+            CallableStatement st = getConnection().prepareCall("{call economyAddMoneyPocket(?, ?, ?)}");
+            st.setString(1, uuid.toString());
+            st.setObject(2, amount);
+            st.setString(3, serverName);
             st.execute();
+            st.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -138,10 +143,12 @@ public class SQL {
 
     public void addAmountToBank(UUID uuid, BigInteger amount) {
         try {
-            PreparedStatement st;
-            ResultSet rs;
-            st = getConnection().prepareCall("economyAddMoneyToBank('" + uuid + "', '" + amount + "', '" + serverName + "')");
+            CallableStatement st = getConnection().prepareCall("{call economyAddMoneyToBank(?, ?, ?)}");
+            st.setString(1, uuid.toString());
+            st.setObject(2, amount);
+            st.setString(3, serverName);
             st.execute();
+            st.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -149,10 +156,12 @@ public class SQL {
 
     public void subtractAmountFromCash(UUID uuid, BigInteger amount) {
         try {
-            PreparedStatement st;
-            ResultSet rs;
-            st = getConnection().prepareCall("economyRemoveMoneyPocket('" + uuid + "', '" + amount + "', '" + serverName + "')");
+            CallableStatement st = getConnection().prepareCall("{call economyRemoveMoneyPocket(?, ?, ?)}");
+            st.setString(1, uuid.toString());
+            st.setObject(2, amount);
+            st.setString(3, serverName);
             st.execute();
+            st.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -160,10 +169,12 @@ public class SQL {
 
     public void subtractAmountFromBank(UUID uuid, BigInteger amount) {
         try {
-            PreparedStatement st;
-            ResultSet rs;
-            st = getConnection().prepareCall("economyRemoveMoneyFromBank('" + uuid + "', '" + amount + "', '" + serverName + "')");
+            CallableStatement st = getConnection().prepareCall("{call economyRemoveFromBank(?, ?, ?)}");
+            st.setString(1, uuid.toString());
+            st.setObject(2, amount);
+            st.setString(3, serverName);
             st.execute();
+            st.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
